@@ -9,12 +9,12 @@ import java.io.PrintWriter;
 import java.util.concurrent.ForkJoinPool;
 
 
-public class photosynthesis_paral{
+public class photosynthesis_paral {
      public static void main(String[] args) throws Exception{
         int procID = 0;
         ForkJoinPool fjPool = new ForkJoinPool();
         System.out.println("I am running");
-        File file = new File("sample_input.txt");
+        File file = new File("seqData.txt");
         if(args.length >0){
           file = new File(args[0]);
         }
@@ -46,25 +46,12 @@ public class photosynthesis_paral{
                 startrow = ls2d.get(start_index +x_axis);
               }
               // Implement the parallel version
-              SumTree mainThread = new SumTree(startrow,y_corner_tree,tree_extend,procID++);
-              System.out.println(mainThread.getCompute());
-              //fjPool.invoke(new SumTree(startrow,y_corner_tree,tree_extend,procID++));
+              fjPool.invoke(new SumTree(startrow,y_corner_tree,tree_extend,procID++));
               // Create a thread for each tree row
             }
 
           }//end numTrees loop
         }
         System.out.println("I am done");
-        //writting to output file
-        /*PrintWriter writer = new PrintWriter("test output.txt", "UTF-8");
-        if(args.length >0){
-          writer = new PrintWriter(args[1], "UTF-8");
-        }
-        writer.println(totalAll/numTrees); //avg
-        writer.println(numTrees); //num of trees
-        for(Double tot: list_of_total){
-          writer.println(tot); //avg
-        }
-        writer.close();*/
-        }//end while
+     }
 }

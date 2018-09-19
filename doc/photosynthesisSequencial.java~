@@ -1,4 +1,6 @@
 
+
+
 import java.io.File;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -8,12 +10,9 @@ import java.io.PrintWriter;
 
 
 public class photosynthesisSequencial{
-
   public static void main(String[] args) throws Exception {
     System.out.println("I am running");
-    //taking input from sumTreeSeq, "come back to sort this out"
-
-    File file = new File("seqData.txt");
+    File file = new File("sample_input.txt");
     if(args.length >0){
       file = new File(args[0]);
     }

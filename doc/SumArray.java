@@ -7,13 +7,14 @@ public class SumArray extends RecursiveTask<String>  {
 	  String lo; // arguments
 	  String hi;
 	  String[] arr;
-	  static final int SEQUENTIAL_CUTOFF=100000;
+	  static final int SEQUENTIAL_CUTOFF=20000;
 
 	  String ans; // result
 
 	  SumArray(String[] a, String l, String h) {
 	    lo=l; hi=h; arr=a;
 	  }
+
 
 	  protected String compute(){// return answer - instead of run
 		  if(( Integer.parseInt(hi)-Integer.parseInt(lo) ) < SEQUENTIAL_CUTOFF) {
@@ -34,10 +35,7 @@ public class SumArray extends RecursiveTask<String>  {
 			  // order of next 4 lines
 			  // essential – why?
 			  left.fork();
-				//Experimental lines
-				right.fork();
-				String rightAns = right.join();
-			  //String rightAns = right.compute();
+			  String rightAns = right.compute();
 			  String leftAns  = left.join();
 				Double totl = (Double.parseDouble(leftAns) + Double.parseDouble(rightAns));
 			  return Double.toString(totl);

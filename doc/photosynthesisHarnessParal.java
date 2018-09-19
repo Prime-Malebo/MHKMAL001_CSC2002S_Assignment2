@@ -6,14 +6,10 @@ import java.util.List;
 import java.util.Arrays;
 import java.io.PrintWriter;
 
-
-public class photosynthesisSequencial{
-
-  public static void main(String[] args) throws Exception {
+public class photosynthesisHarness {
+	public static void main(String[] args) throws Exception {
     System.out.println("I am running");
-    //taking input from sumTreeSeq, "come back to sort this out"
-
-    File file = new File("seqData.txt");
+    File file = new File("../doc/data.txt");
     if(args.length >0){
       file = new File(args[0]);
     }
@@ -38,7 +34,6 @@ public class photosynthesisSequencial{
 
 
       for(int j=0; j<numTrees; j++){ //calculate total sunlight per tree
-
         double total_per_tree=0;
 
         String treeinfo =  sc.nextLine() ;
@@ -46,25 +41,27 @@ public class photosynthesisSequencial{
         int tree_extend = Character.getNumericValue(treeinfo.charAt(4)) ; //canopy extent of tree
         int y_corner_tree = Character.getNumericValue(treeinfo.charAt(2)); //y corner of tree
 
-        for(int k=0; k<tree_extend; k++){
-
+        for(int x_axis=0; x_axis<tree_extend; x_axis++){
           List<String> startrow = new ArrayList<String>();
-          if((start_index +k)< ls2d.size()){
-            startrow = ls2d.get(start_index +k);
+          if((start_index +x_axis)< ls2d.size()){
+            startrow = ls2d.get(start_index +x_axis);
           }
+          // Implement the parallel version
 
-          for(int a=0; a<tree_extend; a++){
-            if( ((y_corner_tree+a)< startrow.size()) && (startrow.size()!=0) ){
+          // - Use the Sum Array to to sum startrow
+          //    - pass in the y_corner_tree as the start of the array and the end as y_corner_tree + tree_extend
 
-              total_per_tree += Double.parseDouble( startrow.get( y_corner_tree+a  ) );
-              System.out.println(total_per_tree);
-            }
+          // Limit the hihgest index
+          int arrayStart = y_corner_tree;
+          int arrayEnd = y_corner_tree + tree_extend;
+          if(arrayEnd >= startrow.size()){
+            arrayEnd = startrow.size();
           }
+          total_per_tree += Double.parseDouble(fjPool.invoke(new SumArray(startrow.toArray(new String[0]),Integer.toString(arrayStart),Integer.toString(arrayEnd))));
+          //    - Sum array will retunn the sum of the array and this will be the value of total_per_tree
         }
-
         totalAll += total_per_tree;
         list_of_total.add(total_per_tree);
-
       }//end numTrees loop
 
     System.out.println("I am done");
